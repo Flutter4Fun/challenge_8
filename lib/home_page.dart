@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -49,7 +50,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Flutter4fun.com"),),
+      appBar: AppBar(
+        title: const Text("Flutter4fun.com"),
+      ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : GridView.builder(
@@ -58,9 +61,31 @@ class _HomePageState extends State<HomePage> {
                   crossAxisCount: 2, mainAxisSpacing: 4, crossAxisSpacing: 4),
               itemCount: encryptedFiles.length,
               itemBuilder: (context, index) {
-                return Image(
-                  image: EncryptedFileImage(encryptedFiles[index]),
-                  fit: BoxFit.cover,
+                final file = encryptedFiles[index];
+                return Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image(
+                      image: EncryptedFileImage(file),
+                      fit: BoxFit.cover,
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: double.infinity,
+                        color: Colors.black45,
+                        height: 32,
+                        child: Center(
+                          child: Text(
+                            '${index+1}-encrypted',
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               },
             ),
